@@ -1,15 +1,4 @@
-// ============================================================
-//  SWORD ART ONLINE — COMPLETE EPISODE LIST
-//  Each episode has TWO buttons:
-//    • Tagalog  — opens in current tab (existing links)
-//    • Original — opens in a new tab (only shown if link exists)
-//  Movies with local video files use a Play button.
-// ============================================================
-
 (function () {
-    // ----------------------------------------------------------
-    //  NEW TAB PLAYER — builds an HTML page with an embedded video
-    // ----------------------------------------------------------
     function openVideoPlayer(title, videoUrl) {
         const playerHTML = `<!DOCTYPE html>
 <html lang="en">
@@ -78,40 +67,29 @@
             background: #000;
         }
     </style>
-</head>
-<body>
-    <div class="player-bar">
-        <h1>▶ ${title}</h1>
-        <a class="close-btn" href="javascript:window.close()">✕ Close</a>
-    </div>
-    <div class="video-wrapper">
-        <video controls autoplay src="${videoUrl}"></video>
-    </div>
-</body>
-</html>`;
+    </head>
+    <body>
+        <div class="player-bar">
+            <h1>▶ ${title}</h1>
+            <a class="close-btn" href="javascript:window.close()">✕ Close</a>
+        </div>
+        <div class="video-wrapper">
+            <video controls autoplay src="${videoUrl}"></video>
+        </div>
+    </body>
+    </html>`;
 
         const blob = new Blob([playerHTML], { type: 'text/html' });
         const url = URL.createObjectURL(blob);
         window.open(url, '_blank');
     }
 
-    // ----------------------------------------------------------
-    //  HELPER — check if a link is usable
-    //  Empty, "#", or missing → considered blank
-    // ----------------------------------------------------------
     function hasLink(url) {
         if (!url) return false;
         const trimmed = String(url).trim();
         if (trimmed === '' || trimmed === '#') return false;
         return true;
     }
-
-    // ----------------------------------------------------------
-    //  1. DATA — all arcs in viewing order
-    //  link      → Tagalog dub (current tab)
-    //  original  → Original Japanese (new tab) — hidden if blank
-    //  video     → local file (Play button → new tab player)
-    // ----------------------------------------------------------
 
     // ===== SEASON 1: AINCRAD ARC =====
     const aincrad = [
@@ -242,9 +220,6 @@
         { title: "New World",                           link: "", original: "https://zorotv.com.in/sword-art-online-alicization-war-of-underworld-part-2-episode-12/" }
     ];
 
-    // ----------------------------------------------------------
-    //  2. BUTTON BUILDERS
-    // ----------------------------------------------------------
     function buildTagalogBtn(ep) {
         const btn = document.createElement('a');
         btn.className = 'episode-btn';
@@ -287,9 +262,6 @@
         return btn;
     }
 
-    // ----------------------------------------------------------
-    //  3. RENDER — only show buttons that have real links
-    // ----------------------------------------------------------
     function renderEpisode(ep, index) {
         const item = document.createElement('div');
         item.className = 'episode-item';
@@ -307,15 +279,14 @@
         const btnGroup = document.createElement('div');
         btnGroup.className = 'episode-buttons';
 
-        // --- Movie with local video ---
         if (ep.video) {
             btnGroup.appendChild(buildPlayBtn(ep));
         } else {
-            // --- Tagalog button (only if link exists) ---
+            
             if (hasLink(ep.link)) {
                 btnGroup.appendChild(buildTagalogBtn(ep));
             }
-            // --- Original button (only if original link exists) ---
+            
             if (hasLink(ep.original)) {
                 btnGroup.appendChild(buildOriginalBtn(ep));
             }
@@ -335,9 +306,6 @@
         list.forEach((ep, i) => container.appendChild(renderEpisode(ep, i)));
     }
 
-    // ----------------------------------------------------------
-    //  4. RENDER ALL ARCS
-    // ----------------------------------------------------------
     renderList(aincrad,           'episodeList');
     renderList(fairyDance,        'fairyDanceList');
     renderList(phantomBullet,     'phantomBulletList');
@@ -346,9 +314,6 @@
     renderList(alicization,       'alicizationList');
     renderList(warOfUnderworld,   'warOfUnderworldList');
 
-    // ----------------------------------------------------------
-    //  5. LOG
-    // ----------------------------------------------------------
     const total = aincrad.length + fairyDance.length + phantomBullet.length +
                   calibur.length + mothersRosario.length + alicization.length +
                   warOfUnderworld.length;
