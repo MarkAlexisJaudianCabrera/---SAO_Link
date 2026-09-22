@@ -224,6 +224,8 @@
         const btn = document.createElement('a');
         btn.className = 'episode-btn';
         btn.href = ep.link;
+        btn.target = '_blank';
+        btn.rel = 'noopener noreferrer';
         btn.setAttribute('aria-label', `Watch ${ep.title} (Tagalog)`);
         btn.innerHTML = `
             <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
